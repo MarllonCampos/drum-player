@@ -11,13 +11,10 @@
     justify-content: center;
     width: 100%;
 
-    gap: $md-size;
+    gap: $xl-size;
     padding: $lg-size 0;
     button {
       padding: $md-size $lg-size;
-      &:first-child {
-        margin-right: 12px;
-      }
     }
   }
   &__beat-container {

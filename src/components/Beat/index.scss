@@ -8,6 +8,10 @@
   &__select {
     height: inherit;
     select {
+      border: 0;
+      background-color: transparent;
+      font-weight: bold;
+      font-size: 16px;
       height: inherit;
       padding-left: $sm-size;
     }
@@ -25,16 +29,22 @@
       border-radius: 6px;
       margin-right: $sm-size;
       cursor: pointer;
+      box-shadow: inset 1px 1px 3px 0px;
       &:nth-of-type(4n) {
         margin-right: $lg-size;
       }
-      border: 1px solid black;
     }
     input {
       display: none;
-    }
-    input:checked + label {
-      background-color: blue;
+
+      &:checked + label {
+        box-shadow: 1px 1px 3px 0px;
+        background: blue;
+      }
+      &:disabled + label {
+        background: #ccc;
+        border: none;
+      }
     }
   }
 }

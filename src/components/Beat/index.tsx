@@ -1,69 +1,89 @@
 import React, {
   ChangeEvent,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { BeatsContext } from "../../contexts/beats.context";
+import { SetTempoInterface } from "../Tracks";
 
 interface BeatProps {
-  setTempo: (index: number, tempo: []) => void;
+  setTempo: ({
+    beatIndex,
+    index,
+    state,
+    beatName,
+  }: SetTempoInterface) => void;
   beatIndex: number;
 }
 const Beat = ({ setTempo, beatIndex }: BeatProps) => {
   const { allBeats } = useContext(BeatsContext);
-  const [selectedBeat, setSelectedBeat] = useState("");
-  const [beatTempo, setBeatTempo] = useState([
-    ...Array(16),
-  ]);
+  const [selectedBeat, setSelectedBeat] = useState("none");
 
   const handleBeatSelect = (
     event: ChangeEvent<HTMLSelectElement>
   ) => {
     const beat = event.target.value;
+    console.log(beat);
     setSelectedBeat(beat);
   };
 
-  const handleInputChange = (index: number) => {
-    setBeatTempo((prevState) => {
-      const tempo: boolean[] = prevState.map(
-        (beat = false, tempoIndex) => {
-          if (index === tempoIndex) return true;
-          else return beat;
-        }
-      );
-
-      setTempo(
-        tempo as boolean[],
-        `${selectedBeat}-${beatIndex}`
-      );
-      return tempo;
-    });
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const { checked } = event.target;
+    const beatObject = {
+      index,
+      state: checked,
+      beatIndex,
+      beatName: selectedBeat,
+    };
+    setTempo(beatObject);
   };
   return (
     <div className="beat">
       <div className="beat__select">
-        <select onChange={handleBeatSelect}>
-          {allBeats.map((beat, index) => (
-            <option
-              value={beat.replace(/\.wav/g, "")}
-              key={index}
-            >
-              {beat}
-            </option>
-          ))}
+        <select
+          onChange={handleBeatSelect}
+          value={selectedBeat}
+        >
+          <option value="none" disabled hidden>
+            Selecione um Beat
+          </option>
+          {allBeats.map((beat, index) => {
+            const formattedValue = beat.replace(
+              /\.wav/g,
+              ""
+            );
+            return (
+              <option value={formattedValue} key={index}>
+                {formattedValue}
+              </option>
+            );
+          })}
         </select>
       </div>
       <div className="beat__tempo">
-        {beatTempo.map((_value, index) => (
+        {[...Array(16)].map((_value, index) => (
           <React.Fragment key={index}>
             <input
               type="checkbox"
               id={`${beatIndex}-${index}`}
               name={`${index}`}
               value={index}
-              onChange={() => handleInputChange(index)}
+              onChange={(ev) =>
+                handleInputChange(ev, index)
+              }
+              disabled={selectedBeat === "none"}
             />
-            <label htmlFor={`${beatIndex}-${index}`} />
+            <label
+              htmlFor={`${beatIndex}-${index}`}
+              onClick={() =>
+                selectedBeat === "none" &&
+                alert("Selecione um beat")
+              }
+            />
           </React.Fragment>
         ))}
       </div>

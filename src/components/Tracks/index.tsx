@@ -1,15 +1,49 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Beat from "../Beat";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
+export interface SetTempoInterface {
+  index: number;
+  state: boolean;
+  beatIndex: number;
+  beatName: string;
+}
+
+interface trackInterface {
+  tempo: boolean[];
+  beatName: string;
+}
 const Tracks = () => {
-  const [tracks, setTracks] = useState({});
+  const [tracks, setTracks] = useState<
+    Array<trackInterface>
+  >([{ beatName: "", tempo: [false] }]);
   const [bpm, setBpm] = useState<number>(60);
-  const setTempo = (tempo: boolean[], beatName: string) => {
-    setTracks((prevState) => ({
-      ...prevState,
-      [beatName]: tempo,
-    }));
+
+  useEffect(() => {
+    console.log(tracks);
+  }, [tracks]);
+  const setTempo = ({
+    beatIndex,
+    index,
+    state,
+    beatName,
+  }: SetTempoInterface) => {
+    setTracks(
+      tracks.map((track, tracksIndex) => {
+        if (beatIndex === tracksIndex) {
+          const array =
+            track.tempo.length < 16
+              ? Array(16).fill(false)
+              : track.tempo;
+          console.log(index, array);
+          array[index] =
+            array[index] !== state ? state : array[index];
+          return { beatName, tempo: array };
+        } else {
+          return track;
+        }
+      })
+    );
   };
   const handleBpmChange = (
     event: ChangeEvent<HTMLInputElement>
@@ -61,7 +95,10 @@ const Tracks = () => {
       </div>
       <button
         onClick={() =>
-          setTracks((prevState) => [...prevState, []])
+          setTracks((prevState) => [
+            ...prevState,
+            { beatName: "", tempo: [] },
+          ])
         }
         className="tracks__plus-tracks"
       >
