@@ -8,7 +8,6 @@
   &__controller {
     display: flex;
     align-items: center;
-    justify-content: center;
     width: 100%;
 
     gap: $xl-size;
@@ -17,11 +16,31 @@
       padding: $md-size $lg-size;
     }
   }
+
+  &__beats {
+    display: flex;
+    align-items: center;
+  }
   &__beat-container {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
     gap: $md-size;
     padding: $md-size 0;
+  }
+
+  &__minus-tracks {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    &__icon {
+      color: #ed4343;
+    }
+
+    &:disabled > * {
+      display: none;
+    }
   }
   &__plus-tracks {
     background-color: transparent;
