@@ -1,31 +1,73 @@
-import React, { useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Beat from "../Beat";
-
-// import { Container } from './styles';
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const Tracks = () => {
-  const [beats, setBeats] = useState<Array<string>>([]);
-  const [tracks, setTracks] = useState<number>(0);
-  useEffect(() => {
-    (async () => {
-      const allBeats = await fetch(
-        "https://cdnqa.mesalva.com/desafios-techs/drumplayer/files.json",
-        { method: "GET" }
-      );
-      const { files } = await allBeats.json();
-      setBeats(
-        files.map((file: string) =>
-          file.replace(/data\//g, "")
-        )
-      );
-    })();
-  }, []);
+  const [tracks, setTracks] = useState({});
+  const [bpm, setBpm] = useState<number>(60);
+  const setTempo = (tempo: boolean[], beatName: string) => {
+    setTracks((prevState) => ({
+      ...prevState,
+      [beatName]: tempo,
+    }));
+  };
+  const handleBpmChange = (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const inputValue = event.target.value;
+    const numberValue = Number(inputValue);
+    if (numberValue < 20) return setBpm(20);
+    if (numberValue > 220) return setBpm(220);
+
+    setBpm(numberValue);
+  };
+  const handleBpmClick = (
+    event: React.MouseEvent<HTMLInputElement>
+  ) => {
+    const target = event.target as HTMLInputElement;
+    const inputValue = target.value;
+    const numberValue = Number(inputValue);
+    if (numberValue < 20) return setBpm(20);
+    if (numberValue > 220) return setBpm(220);
+    setBpm(numberValue);
+  };
   return (
-    <>
-      {Array(tracks).map((track) => {
-        <Beat />;
-      })}
-    </>
+    <div className="tracks">
+      <div className="tracks__controller">
+        <button>Play</button>
+        <button>Stop</button>
+        <div className="tracks__bpm-container">
+          <p className="tracks__bpm-value">{bpm}</p>
+          <input
+            type="range"
+            className="tracks__bpm-input"
+            min={20}
+            max={220}
+            defaultValue={60}
+            step={10}
+            onChange={handleBpmChange}
+            onClick={handleBpmClick}
+          />
+        </div>
+      </div>
+      <div className="tracks__beat-container">
+        {tracks.map((_track, index) => (
+          <Beat
+            setTempo={setTempo}
+            beatIndex={index}
+            key={index}
+          />
+        ))}
+      </div>
+      <button
+        onClick={() =>
+          setTracks((prevState) => [...prevState, []])
+        }
+        className="tracks__plus-tracks"
+      >
+        <AiOutlinePlusCircle size={36} />
+      </button>
+    </div>
   );
 };
 

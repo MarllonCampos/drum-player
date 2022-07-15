@@ -1,0 +1,52 @@
+.tracks {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__controller {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    gap: $md-size;
+    padding: $lg-size 0;
+    button {
+      padding: $md-size $lg-size;
+      &:first-child {
+        margin-right: 12px;
+      }
+    }
+  }
+  &__beat-container {
+    display: flex;
+    flex-direction: column;
+    gap: $md-size;
+    padding: $md-size 0;
+  }
+  &__plus-tracks {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__bpm {
+    &-container {
+      max-width: 420px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &-input {
+      width: 100%;
+    }
+
+    &-value {
+      font-size: 14px;
+    }
+  }
+}
