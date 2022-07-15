@@ -1,0 +1,40 @@
+.beat {
+  $beat-height: 32px;
+  display: flex;
+  align-items: center;
+  gap: $xl-size;
+  height: 32px;
+
+  &__select {
+    height: inherit;
+    select {
+      height: inherit;
+      padding-left: $sm-size;
+    }
+  }
+
+  &__tempo {
+    height: inherit;
+    display: flex;
+    flex: 1;
+
+    label {
+      display: flex;
+      height: $beat-height;
+      width: $beat-height;
+      border-radius: 6px;
+      margin-right: $sm-size;
+      cursor: pointer;
+      &:nth-of-type(4n) {
+        margin-right: $lg-size;
+      }
+      border: 1px solid black;
+    }
+    input {
+      display: none;
+    }
+    input:checked + label {
+      background-color: blue;
+    }
+  }
+}
