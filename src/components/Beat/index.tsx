@@ -1,9 +1,9 @@
 import React, {
   ChangeEvent,
   useContext,
-  useEffect,
   useState,
 } from "react";
+import { AiOutlineMinusCircle } from "react-icons/ai";
 import { BeatsContext } from "../../contexts/beats.context";
 import { SetTempoInterface } from "../Tracks";
 
@@ -15,8 +15,18 @@ interface BeatProps {
     beatName,
   }: SetTempoInterface) => void;
   beatIndex: number;
+  removeTrack: (index: number) => void;
+  setBeatName: (
+    beatName: string,
+    beatIndex: number
+  ) => void;
 }
-const Beat = ({ setTempo, beatIndex }: BeatProps) => {
+const Beat = ({
+  setTempo,
+  beatIndex,
+  removeTrack,
+  setBeatName,
+}: BeatProps) => {
   const { allBeats } = useContext(BeatsContext);
   const [selectedBeat, setSelectedBeat] = useState("none");
 
@@ -24,7 +34,7 @@ const Beat = ({ setTempo, beatIndex }: BeatProps) => {
     event: ChangeEvent<HTMLSelectElement>
   ) => {
     const beat = event.target.value;
-    console.log(beat);
+    setBeatName(beat, beatIndex);
     setSelectedBeat(beat);
   };
 
@@ -43,6 +53,15 @@ const Beat = ({ setTempo, beatIndex }: BeatProps) => {
   };
   return (
     <div className="beat">
+      <button
+        onClick={() => removeTrack(beatIndex)}
+        className="tracks__minus-tracks"
+      >
+        <AiOutlineMinusCircle
+          size={24}
+          className="tracks__minus-tracks__icon"
+        />
+      </button>
       <div className="beat__select">
         <select
           onChange={handleBeatSelect}
@@ -57,7 +76,7 @@ const Beat = ({ setTempo, beatIndex }: BeatProps) => {
               ""
             );
             return (
-              <option value={formattedValue} key={index}>
+              <option value={beat} key={index}>
                 {formattedValue}
               </option>
             );

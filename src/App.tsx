@@ -6,7 +6,7 @@ function App() {
   return (
     <BeatsProvider>
       <div className="app-container">
-        <h1>Drum Player</h1>
+        <h1 style={{ textAlign: "center" }}>Drum Player</h1>
         <Tracks />
       </div>
     </BeatsProvider>
